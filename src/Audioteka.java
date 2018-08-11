@@ -45,16 +45,14 @@ public class Audioteka {
     }
 
     private static FilenameFilter tylkoMP3() {
-        FilenameFilter filenameFilter = new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                if (name.endsWith(".mp3")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        };
+        //        FilenameFilter filenameFilter = new FilenameFilter() {
+        FilenameFilter filenameFilter = (dir, name) -> {
+                        if (name.endsWith(".mp3")) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    };
         return filenameFilter;
     }
 }
