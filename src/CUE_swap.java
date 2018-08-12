@@ -6,10 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CUE_swap {
-
-    private static final String pattern = "*.cue";
 
     private static FilenameFilter findCUE() {
         //        FilenameFilter filenameFilter = new FilenameFilter() {
@@ -43,16 +43,22 @@ public class CUE_swap {
 
         String patREM = "^\\s.(REM).+\\d$";
         String patTITLE = "^\\s.(TITLE).*(\")$";
+;
 
+        List<String> allREM = new ArrayList<String>();
+        System.out.println(allREM.size());
         for (String cueLine : cueLines) {
-            cueLine.
-//            if (!cueLine.matches("^\\s.(REM)")) ;
-            if (!cueLine.matches("^\\S")) ;
             {
-//                int i = cueLines
-                System.out.println(cueLine);
+                Matcher m = Pattern.compile(patREM)
+                        .matcher(cueLine);
+                while (m.find()) {
+                    allREM.add(m.group());
+                }
             }
         }
+        allREM.toString();
+        System.out.println("Size is" + allREM.size());
+        allREM.forEach(System.out::println);
         /*
 
 =============================
