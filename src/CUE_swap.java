@@ -27,7 +27,7 @@ public class CUE_swap {
 
         File folder = new File("./");
         File[] cue = folder.listFiles(findCUE());
-        List<String> source = new ArrayList<>();
+        List<String> source = new ArrayList<>(100);
 
         for (File file : cue) {
             System.out.println(file.getName());
@@ -43,10 +43,8 @@ public class CUE_swap {
 
         String patREM = "^\\s.(REM).+\\d$";
         String patTITLE = "^\\s.(TITLE).*(\")$";
-;
 
-        List<String> allREM = new ArrayList<String>();
-        System.out.println(allREM.size());
+        List<String> allREM = new ArrayList<String>(100);
         for (String cueLine : cueLines) {
             {
                 Matcher m = Pattern.compile(patREM)
@@ -54,12 +52,34 @@ public class CUE_swap {
                 while (m.find()) {
                     allREM.add(m.group());
                 }
+                m.reset(patTITLE);
             }
         }
-        allREM.toString();
-        System.out.println("Size is" + allREM.size());
+        System.out.println("Size REM " + allREM.size());
         allREM.forEach(System.out::println);
-        /*
+
+        cueLines.forEach(System.out::println);
+
+        List<String> allTITLES = new ArrayList<String>(100);
+        for (String cueline : cueLines) {
+            Matcher matcher = Pattern.compile(patTITLE).matcher(cueline);
+//            matcher.reset(patTITLE);
+            while (matcher.find()) {
+                allTITLES.add(matcher.group());
+            }
+        }
+        System.out.println("Size TITLE is" + allTITLES.size());
+        allREM.forEach(System.out::println);
+
+
+        /*      ============== JAVA 9 ================
+        String[] matches = Pattern.compile("your regex here")
+                .matcher("string to search from here")
+                .results()
+                .map(MatchResult::group)
+                .toArray(String[]::new);
+        // or .collect(Collectors.toList())
+/*
 
 =============================
         Find.Finder finder = new Find.Finder(pattern);
