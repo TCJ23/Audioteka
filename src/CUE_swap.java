@@ -28,18 +28,33 @@ public class CUE_swap {
         File folder = new File("./");
         File[] cue = folder.listFiles(findCUE());
         List<String> source = new ArrayList<>();
-        List<String> target = new ArrayList<>();
 
         for (File file : cue) {
             System.out.println(file.getName());
             source.add(file.getName());
         }
-        Path modi = Paths.get(source.get(0));
-        boolean readable = Files.isReadable(modi);
-        boolean writable = Files.isWritable(modi);
+        Path path = Paths.get(source.get(0));
+        boolean readable = Files.isReadable(path);
+        boolean writable = Files.isWritable(path);
         System.out.println("readable " + readable + " writeable " + writable);
+        List<String> cueLines = Files.readAllLines(path);
+//        cueLines.forEach(System.out::println);
+//        cueLines.forEach(s -> s.matches("REM"));
 
-/*
+        String patREM = "^\\s.(REM).+\\d$";
+        String patTITLE = "^\\s.(TITLE).*(\")$";
+
+        for (String cueLine : cueLines) {
+            cueLine.
+//            if (!cueLine.matches("^\\s.(REM)")) ;
+            if (!cueLine.matches("^\\S")) ;
+            {
+//                int i = cueLines
+                System.out.println(cueLine);
+            }
+        }
+        /*
+
 =============================
         Find.Finder finder = new Find.Finder(pattern);
         Path path = Files.walkFileTree(Paths.get("./"), finder);//Files.walkFileTree(startingDir, finder);
