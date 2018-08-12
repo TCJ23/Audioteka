@@ -1,23 +1,24 @@
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
 public class Audioteka {
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         File folder = new File("./");
         File[] files = folder.listFiles(tylkoMP3());
         List<String> source = new ArrayList<>();
         List<String> target = new ArrayList<>();
 
-        for (File file : files)
-        {
+        for (File file : files) {
             System.out.println(file.getName());
             source.add(file.getName());
         }
@@ -47,12 +48,12 @@ public class Audioteka {
     private static FilenameFilter tylkoMP3() {
         //        FilenameFilter filenameFilter = new FilenameFilter() {
         FilenameFilter filenameFilter = (dir, name) -> {
-                        if (name.endsWith(".mp3")) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    };
+            if (name.endsWith(".mp3")) {
+                return true;
+            } else {
+                return false;
+            }
+        };
         return filenameFilter;
     }
 }
