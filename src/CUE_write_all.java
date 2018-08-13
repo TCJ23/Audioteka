@@ -1,15 +1,15 @@
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CUE_write_all {
+
+    static int count = 0;
 
     private static FilenameFilter findCUE() {
         //        FilenameFilter filenameFilter = new FilenameFilter() {
@@ -35,13 +35,41 @@ public class CUE_write_all {
         Path path = Paths.get(source.get(0));
 
         List<String> cueLines = Files.readAllLines(path);
-        cueLines.forEach(System.out::println);
+//        cueLines.forEach(System.out::println);
+        System.out.println("");
         Path good = Paths.get("good cue.cue");
         Files.write(good, cueLines);
-        /*========= by bytes*/
-//        String cuebytes = new String(Files.readAllBytes(path));
+/*
+        ========= by bytes
+        String cuebytes = new String(Files.readAllBytes(path));
+*/
         Files.write(Paths.get("bytesCue.cue"), Files.readAllBytes(path));
 
+        List<String> listaAdam = new ArrayList<>(100);
+        List<String> titleList = new ArrayList<>(100);
+
+        for (String t : cueLines
+                ) {
+            if (t.contains("TITLE") && !t.startsWith("TITLE")) {
+                titleList.add(t);
+            }
+        }
+        titleList.forEach(System.out::println);
+        System.out.println("lista tytułów rozmiar" + titleList.size());
+
+        for (String s : cueLines) {
+            if (s.contains("REM") && !s.startsWith("REM")) {
+                count++;
+                titleList
+                String a = s.replace("REM", "DUPA");
+                listaAdam.add(a);
+            } else {
+                listaAdam.add(s);
+            }
+        }
+//        listaAdam.forEach(System.out::println);
+        System.out.println(count);
+        Files.write(Paths.get("adam.cue"), listaAdam);
     }
 }
 /*Files.write(Paths.get("file1.bin"), data);
