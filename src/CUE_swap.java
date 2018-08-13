@@ -65,6 +65,7 @@ public class CUE_swap {
             Matcher matcher = Pattern.compile(patTITLE).matcher(cueline);
 //            matcher.reset(patTITLE);
             while (matcher.find()) {
+//                matcher.appendReplacement(matcher.group(), )
                 allTITLES.add(matcher.group());
             }
         }
