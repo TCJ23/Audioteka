@@ -26,27 +26,28 @@ public class CUE_write_all {
     public static void main(String[] args) throws IOException {
         File folder = new File("./");
         File[] cue = folder.listFiles(findCUE());
-        List<String> source = new ArrayList<>(100);
+        List<String> source = new ArrayList<>();
 
         for (File file : cue) {
             System.out.println(file.getName());
             source.add(file.getName());
         }
+        /* wrzucić w lupę ? */
         Path path = Paths.get(source.get(0));
 
         List<String> cueLines = Files.readAllLines(path);
 //        cueLines.forEach(System.out::println);
-        System.out.println("");
+/*        System.out.println("");
         Path good = Paths.get("good cue.cue");
-        Files.write(good, cueLines);
+        Files.write(good, cueLines);*/
 /*
         ========= by bytes
         String cuebytes = new String(Files.readAllBytes(path));
 */
-        Files.write(Paths.get("bytesCue.cue"), Files.readAllBytes(path));
+//        Files.write(Paths.get("bytesCue.cue"), Files.readAllBytes(path));
 
-        List<String> listaAdam = new ArrayList<>(100);
-        List<String> titleList = new ArrayList<>(100);
+        List<String> replaceList = new ArrayList<>();
+        List<String> titleList = new ArrayList<>();
 
         for (String t : cueLines
                 ) {
@@ -54,29 +55,26 @@ public class CUE_write_all {
                 titleList.add(t);
             }
         }
-        titleList.forEach(System.out::println);
-        System.out.println("lista tytułów rozmiar" + titleList.size());
+//        titleList.forEach(System.out::println);
+        System.out.println("\nlista tytułów rozmiar" + titleList.size());
 
         for (String s : cueLines) {
             if (s.contains("REM") && !s.startsWith("REM")) {
+//                replaceList.add(titleList.get(i));
+//            for (int i = 0; i < titleList.size(); i++) {
+                /*replaceList.add(titleList.get(0));
+                titleList.remove(0);*/
+//                    String title = titleList.get(i);
+//                    String a = s.replace(s, title);
+//                    replaceList.add(a);
                 count++;
-                titleList
-                String a = s.replace("REM", "DUPA");
-                listaAdam.add(a);
             } else {
-                listaAdam.add(s);
+                replaceList.add(s);
+
             }
+//        replaceList.forEach(System.out::println);
+            System.out.println("Liczba zmian: " + count);
+            Files.write(Paths.get("adam.cue"), replaceList);
         }
-//        listaAdam.forEach(System.out::println);
-        System.out.println(count);
-        Files.write(Paths.get("adam.cue"), listaAdam);
     }
 }
-/*Files.write(Paths.get("file1.bin"), data);
-        Files.write(Paths.get("file2.bin"), data,
-        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-        Files.write(Paths.get("file3.txt"), "content".getBytes());
-        Files.write(Paths.get("file4.txt"), "content".getBytes(utf8));
-        Files.write(Paths.get("file5.txt"), lines, utf8);
-        Files.write(Paths.get("file6.txt"), lines, utf8,
-        StandardOpenOption.CREATE, StandardOpenOption.APPEND);*/
