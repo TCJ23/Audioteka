@@ -12,7 +12,7 @@ public class Aadam_CUE {
     public static void main(String[] args) throws Exception {
         File folder = new File("./");
         File[] cue = folder.listFiles(findCUE());
-        List<String> source = new ArrayList<>(100);
+        List<String> source = new ArrayList<>();
 
         for (File file : cue) {
             System.out.println(file.getName());
@@ -30,6 +30,7 @@ public class Aadam_CUE {
             }
         }
         titles.remove(0);
+
         List<String> result = new ArrayList<>();
         int count = 0;
         for (String line : lines) {
