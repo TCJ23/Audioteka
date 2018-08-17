@@ -6,10 +6,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Regex {
-    String patREM = "\\s.(REM).+?\\\"(.+)\\\"";
-    String patTITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
+    static String patREM = "\\s.(REM).+?\\\"(.+)\\\"";
+    static String patTITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
 
     private static FilenameFilter findCUE() {
         FilenameFilter filenameFilter = (dir, name) -> {
@@ -35,11 +37,13 @@ public class Regex {
             List<String> tytuły = new ArrayList<>();
             for (String linia : linie
                     ) {
-                if (linia.trim().startsWith("REM")) {
-                    tytuły.add(linia);
+                Matcher matcher = Pattern.compile(patTITLE).matcher(linia);
+                while (matcher.find()) {
+                    tytuły.add(matcher.group(2));
                 }
             }
-            tytuły.remove(0);
+//            tytuły.remove(0);
+
             for (String tytuł : tytuły
                     ) {
                 if (tytuł == tytuły.get(tytuły.size() - 1)) {
@@ -51,8 +55,8 @@ public class Regex {
         }
 //            tytuły.forEach(System.out::println);
     }
-
 }
+
 
    /* String lineOfText = "if(getip(document.referrer)==\"www.eg.com\" || getip(document.referrer)==\"192.57.42.11\"";
 
