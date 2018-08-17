@@ -27,7 +27,7 @@ public class CUE_swap {
 
         File folder = new File("./");
         File[] cue = folder.listFiles(findCUE());
-        List<String> source = new ArrayList<>(100);
+        List<String> source = new ArrayList<>();
 
         for (File file : cue) {
             System.out.println(file.getName());
@@ -44,7 +44,7 @@ public class CUE_swap {
         String patREM = "^\\s.(REM).+\\d$";
         String patTITLE = "^\\s.(TITLE).*(\")$";
 
-        List<String> allREM = new ArrayList<String>(100);
+        List<String> allREM = new ArrayList<String>();
         for (String cueLine : cueLines) {
             {
                 Matcher m = Pattern.compile(patREM)
@@ -60,7 +60,7 @@ public class CUE_swap {
 
         cueLines.forEach(System.out::println);
 
-        List<String> allTITLES = new ArrayList<String>(100);
+        List<String> allTITLES = new ArrayList<String>();
         for (String cueline : cueLines) {
             Matcher matcher = Pattern.compile(patTITLE).matcher(cueline);
 //            matcher.reset(patTITLE);

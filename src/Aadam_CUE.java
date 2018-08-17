@@ -51,11 +51,7 @@ public class Aadam_CUE {
     private static FilenameFilter findCUE() {
         //        FilenameFilter filenameFilter = new FilenameFilter() {
         FilenameFilter filenameFilter = (dir, name) -> {
-            if (name.endsWith(".cue")) {
-                return true;
-            } else {
-                return false;
-            }
+            return name.endsWith(".cue");
         };
         return filenameFilter;
     }

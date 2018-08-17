@@ -48,8 +48,8 @@ public class CUE_sb {
     }
 
     private static FilenameFilter findCUE() {
-        //        FilenameFilter filenameFilter = new FilenameFilter() {
-        FilenameFilter filenameFilter = (dir, name) -> {
+
+        FilenameFilter filenameFilter = (dir, name) -> { // FilenameFilter filenameFilter = new FilenameFilter()
             if (name.endsWith(".cue")) {
                 return true;
             } else {
