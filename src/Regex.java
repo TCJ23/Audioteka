@@ -38,8 +38,12 @@ public class Regex {
             for (String linia : linie
                     ) {
                 Matcher matcher = Pattern.compile(patTITLE).matcher(linia);
+                Matcher matcher2 = Pattern.compile(patREM).matcher(linia);
                 while (matcher.find()) {
                     tytuły.add(matcher.group(2));
+                }
+                while (matcher2.find()) {
+                    tytuły.add(matcher2.group(2));
                 }
             }
 //            tytuły.remove(0);
