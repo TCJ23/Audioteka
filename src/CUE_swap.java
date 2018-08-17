@@ -41,8 +41,8 @@ public class CUE_swap {
 //        cueLines.forEach(System.out::println);
 //        cueLines.forEach(s -> s.matches("REM"));
 
-        String patREM = "^\\s.(REM).+\\d$";
-        String patTITLE = "^\\s.(TITLE).*(\")$";
+        String patREM = "\\s.(REM).+?\\\"(.+)\\\"";
+        String patTITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
 
         List<String> allREM = new ArrayList<String>();
         for (String cueLine : cueLines) {
