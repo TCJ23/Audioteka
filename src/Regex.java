@@ -23,6 +23,7 @@ public class Regex {
             List<String> linie = Files.readAllLines(path);
             Files.write(path, changeREM_to_Titles(linie));
         }
+        Runtime.getRuntime().exec("./AudiotekaSplit.exe", null, new File("./"));
     }
 
     private static FilenameFilter filter_CUE_ext() {

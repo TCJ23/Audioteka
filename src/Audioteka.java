@@ -15,8 +15,8 @@ public class Audioteka {
 
         File folder = new File("./");
         File[] files = folder.listFiles(tylkoMP3());
-        List<String> source = new ArrayList<>(100);
-        List<String> target = new ArrayList<>(100);
+        List<String> source = new ArrayList<>();
+        List<String> target = new ArrayList<>();
 
         for (File file : files) {
             System.out.println(file.getName());
