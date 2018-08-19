@@ -48,12 +48,13 @@ public class Regex {
         Pattern remPatern = Pattern.compile(patREM);
         int index = 0;
         for (String linia : linie) {
+            StringBuffer sbLinia = new StringBuffer(linia);
             Matcher matchREM = remPatern.matcher(linia);
             if (matchREM.find()) {
-                int start = linia.indexOf("\"");
-                int end = linia.lastIndexOf("\"");
-                zamiana.add(linia.substring(0, start + 1)
-                        + getCorrectTitles(linie).get(index) + ".mp3" + linia.substring(end));
+                int start = sbLinia.indexOf("\"");
+                int end = sbLinia.lastIndexOf("\"");
+                zamiana.add(sbLinia.substring(0, start + 1)
+                        + getCorrectTitles(linie).get(index) + ".mp3" + sbLinia.substring(end));
                 index++;
             } else zamiana.add(linia);
         }
