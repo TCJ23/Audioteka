@@ -13,58 +13,67 @@ public class Regex {
     static String patREM = "\\s.(REM).+?\\\"(.+)\\\"";
     static String patTITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
 
-    private static FilenameFilter findCUE() {
+    public static void main(String[] args) throws IOException {
+        File folder = new File("./");
+        File[] cues = folder.listFiles(filter_CUE_ext());
+        List<String> plikiCUE = find_CUE_files(cues);
+
+        for (int i = 0; i < plikiCUE.size(); i++) {
+            Path path = Paths.get(plikiCUE.get(i));
+            List<String> linie = Files.readAllLines(path);
+            Files.write(path, changeREM_to_Titles(linie));
+        }
+    }
+
+    private static FilenameFilter filter_CUE_ext() {
         FilenameFilter filenameFilter = (dir, name) -> {
             return name.endsWith(".cue");
         };
         return filenameFilter;
     }
 
-    public static void main(String[] args) throws IOException {
-        File folder = new File("./");
-        File[] cues = folder.listFiles(findCUE());
+    private static List<String> find_CUE_files(File[] cues) {
         List<String> plikiCUE = new ArrayList<>();
-
         for (File plik : cues
                 ) {
             plikiCUE.add(plik.getName());
-            System.out.println("Znalazłem takie pliki z rodziałami " + plik.getName());
+            System.out.println("Znalazłem takie plik z rodziałami " + plik.getName());
         }
+        return plikiCUE;
+    }
 
-        for (int i = 0; i < plikiCUE.size(); i++) {
-            Path path = Paths.get(plikiCUE.get(i));
-            List<String> linie = Files.readAllLines(path);
-            List<String> tytuły = new ArrayList<>();
-            for (String linia : linie
-                    ) {
-                Matcher matcher = Pattern.compile(patTITLE).matcher(linia);
-                Matcher matcher2 = Pattern.compile(patREM).matcher(linia);
-                while (matcher.find()) {
-                    tytuły.add(matcher.group(2));
-                }
-                while (matcher2.find()) {
-                    tytuły.add(matcher2.group(2));
-                }
-            }
-//            tytuły.remove(0);
+    private static List<String> changeREM_to_Titles(List<String> linie) {
+        List<String> zamiana = new ArrayList<>();
+        Pattern remPatern = Pattern.compile(patREM);
+        int index = 0;
+        for (String linia : linie) {
+            Matcher matchREM = remPatern.matcher(linia);
+            if (matchREM.find()) {
+                int start = linia.indexOf("\"");
+                int end = linia.lastIndexOf("\"");
+                zamiana.add(linia.substring(0, start + 1)
+                        + getCorrectTitles(linie).get(index) + ".mp3" + linia.substring(end));
+                index++;
+            } else zamiana.add(linia);
+        }
+        System.out.println("\n Wprowadziłem następujące zmiany ");
+        zamiana.forEach(s -> System.out.println(s));
+        return zamiana;
+    }
 
-            for (String tytuł : tytuły
-                    ) {
-                if (tytuł == tytuły.get(tytuły.size() - 1)) {
-                    System.out.println("*********************");
-                } else
-                    System.out.println(tytuł);
-//                for (tytuły.get(tytuły.size() - 1);  {
+    private static List<String> getCorrectTitles(List<String> linie) {
+        List<String> tytuły = new ArrayList<>();
+        Pattern titlesPattern = Pattern.compile(patTITLE);
+        for (String linia : linie
+                ) {
+            Matcher matchTitle = titlesPattern.matcher(linia);
+            while (matchTitle.find()) {
+                tytuły.add(matchTitle.group(2));
             }
         }
-//            tytuły.forEach(System.out::println);
+        System.out.println("\n Znalazłem następujące tytuły rozdziałów: ");
+        tytuły.forEach(s -> System.out.println(s));
+        return tytuły;
     }
 }
 
-
-   /* String lineOfText = "if(getip(document.referrer)==\"www.eg.com\" || getip(document.referrer)==\"192.57.42.11\"";
-
-    String[] valuesInQuotes = StringUtils.substringsBetween(lineOfText, "\"", "\"");
-
-    assertThat(valuesInQuotes[0], is("www.eg.com"));
-    assertThat(valuesInQuotes[1],is("192.57.42.11"));*/
