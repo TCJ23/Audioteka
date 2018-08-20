@@ -1,5 +1,6 @@
+package audioteka.fixer;
+
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,22 +14,17 @@ public class AudiotekaFixer {
     static String patREM = "\\s.(REM).+?\\\"(.+)\\\"";
     static String patTITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         File folder = new File("./");
         File[] cues = folder.listFiles((dir, name) -> name.endsWith(".cue"));
         List<String> plikiCUE = findCueFiles(cues);
 
-        try {
-            for (int i = 0; i < plikiCUE.size(); i++) {
-                Path path = Paths.get(plikiCUE.get(i));
-                List<String> linie = Files.readAllLines(path);
-                Files.write(path, swapRemTitles(linie));
-                Runtime.getRuntime().exec("./AudiotekaSplit.exe", null, new File("./"));
+        for (int i = 0; i < plikiCUE.size(); i++) {
+            Path path = Paths.get(plikiCUE.get(i));
+            List<String> linie = Files.readAllLines(path);
+            Files.write(path, swapRemTitles(linie));
+            Runtime.getRuntime().exec("./AudiotekaSplit.exe", null, new File("./"));
 //                Files.delete(path);
-            }
-        } catch (IOException e) {
-            e.getMessage();
-            e.printStackTrace();
         }
     }
 
@@ -63,18 +59,17 @@ public class AudiotekaFixer {
     }
 
     private static List<String> getCorrectTitles(List<String> linie) {
-        List<String> tytuły = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
         Pattern titlesPattern = Pattern.compile(patTITLE);
         for (String linia : linie
                 ) {
             Matcher matchTitle = titlesPattern.matcher(linia);
             while (matchTitle.find()) {
-                tytuły.add(matchTitle.group(2));
+                titles.add(matchTitle.group(2));
             }
         }
         System.out.println("\n Znalazłem następujące tytuły rozdziałów: ");
-        tytuły.forEach(s -> System.out.println(s));
-        return tytuły;
+        titles.forEach(s -> System.out.println(s));
+        return titles;
     }
 }
-
