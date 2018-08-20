@@ -9,31 +9,30 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Regex {
+public class AudiotekaFixer {
     static String patREM = "\\s.(REM).+?\\\"(.+)\\\"";
     static String patTITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         File folder = new File("./");
-        File[] cues = folder.listFiles(filter_CUE_ext());
-        List<String> plikiCUE = find_CUE_files(cues);
+        File[] cues = folder.listFiles((dir, name) -> name.endsWith(".cue"));
+        List<String> plikiCUE = findCueFiles(cues);
 
-        for (int i = 0; i < plikiCUE.size(); i++) {
-            Path path = Paths.get(plikiCUE.get(i));
-            List<String> linie = Files.readAllLines(path);
-            Files.write(path, changeREM_to_Titles(linie));
+        try {
+            for (int i = 0; i < plikiCUE.size(); i++) {
+                Path path = Paths.get(plikiCUE.get(i));
+                List<String> linie = Files.readAllLines(path);
+                Files.write(path, swapRemTitles(linie));
+                Runtime.getRuntime().exec("./AudiotekaSplit.exe", null, new File("./"));
+//                Files.delete(path);
+            }
+        } catch (IOException e) {
+            e.getMessage();
+            e.printStackTrace();
         }
-        Runtime.getRuntime().exec("./AudiotekaSplit.exe", null, new File("./"));
     }
 
-    private static FilenameFilter filter_CUE_ext() {
-        FilenameFilter filenameFilter = (dir, name) -> {
-            return name.endsWith(".cue");
-        };
-        return filenameFilter;
-    }
-
-    private static List<String> find_CUE_files(File[] cues) {
+    private static List<String> findCueFiles(File[] cues) {
         List<String> plikiCUE = new ArrayList<>();
         for (File plik : cues
                 ) {
@@ -43,7 +42,7 @@ public class Regex {
         return plikiCUE;
     }
 
-    private static List<String> changeREM_to_Titles(List<String> linie) {
+    private static List<String> swapRemTitles(List<String> linie) {
         List<String> zamiana = new ArrayList<>();
         Pattern remPatern = Pattern.compile(patREM);
         int index = 0;
