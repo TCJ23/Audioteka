@@ -11,8 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AudiotekaFixer {
-    static String patREM = "\\s.(REM).+?\\\"(.+)\\\"";
-    static String patTITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
+    static String PAT_REM = "\\s.(REM).+?\\\"(.+)\\\"";
+    static String PAT_TITLE = "\\s+?(TITLE).+?\\\"(.+)\\\"";
 
     public static void main(String[] args) throws IOException {
         File folder = new File("./");
@@ -40,7 +40,7 @@ public class AudiotekaFixer {
 
     private static List<String> swapRemTitles(List<String> linie) {
         List<String> zamiana = new ArrayList<>();
-        Pattern remPatern = Pattern.compile(patREM);
+        Pattern remPatern = Pattern.compile(PAT_REM);
         int index = 0;
         for (String linia : linie) {
             StringBuffer sbLinia = new StringBuffer(linia);
@@ -60,7 +60,7 @@ public class AudiotekaFixer {
 
     private static List<String> getCorrectTitles(List<String> linie) {
         List<String> titles = new ArrayList<>();
-        Pattern titlesPattern = Pattern.compile(patTITLE);
+        Pattern titlesPattern = Pattern.compile(PAT_TITLE);
         for (String linia : linie
                 ) {
             Matcher matchTitle = titlesPattern.matcher(linia);
